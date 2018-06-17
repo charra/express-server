@@ -1,0 +1,7 @@
+/api/responses/*
+/config/env/development
+/config/env/production
+/package-lock.json
+#/logfile.log
+/api/services/Web3Service.js
+/.eslintrc

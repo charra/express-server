@@ -1,0 +1,13 @@
+node_modules/
+./node_modules/*
+node_modules/*
+.idea
+.vscode
+.tmp
+
+apidoc/
+/logfile.log
+config/logfile.log
+/package-lock.json
+
+package-lock.json
