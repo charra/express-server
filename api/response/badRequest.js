@@ -4,7 +4,10 @@ module.exports = function(message) {
   const data = {status: "fail"};
   if (message && message.length < 60) { //delete stacktraces
     data.message = message;
+    return this.json({data: data});
   }
-  return this.json({data: data});
+  else { //delete stacktraces
+    return this.serverError();
+  }
 };
 

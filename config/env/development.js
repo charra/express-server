@@ -11,5 +11,6 @@ module.exports = {
   port: 3030,
   jwtSecret: "secret 123",
   jwtExpirationInterval: 120,
-  logs: "combined"
+  logs: "combined",
+  logDirectory: `${__dirname.split("/config/env")[0]}/logs`
 }

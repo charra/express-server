@@ -1,5 +1,4 @@
-module.exports = function(message) {
-  // Set status code
+module.exports = function() {
   this.status(404);
   const data = {
     status: "error",

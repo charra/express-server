@@ -1,5 +1,4 @@
 module.exports = function() {
-  // Set status code
   this.status(401);
   const data = {
     status: "fail",
