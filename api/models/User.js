@@ -15,11 +15,11 @@ const User = sequelize.define('User', {
   phone: {
     type: Sequelize.STRING,
   },
-}, "", { tableName: tableName });
+}, { tableName: tableName });
 
 User.associate = function (models) {
-  User.belongsTo(models.Schedule, { as: 'owner', foreignKey: { name: 'courseId', allowNull: false } });
-  User.belongsToMany(models.Schedule, { as: 'schedules', through: 'worker_tasks', foreignKey: 'userId' })
+  User.belongsTo(models.Schedule, { as: 'schedules', foreignKey: { name: 'owner', allowNull: false } });
+  User.belongsToMany(models.Schedule, { as: 'task', through: 'worker_tasks', foreignKey: 'contractor' })
 };
 User.beforeCreate(user => {
   user.password = bcrypt.hashSync(user.password, 10);

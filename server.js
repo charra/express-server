@@ -4,7 +4,7 @@ const connection = require("./config/env");
 
 sequelize
 .sync({
-  force: true,
+  force: false,
   logging: true
 })
 //.authenticate()

@@ -4,7 +4,7 @@ const scheduleRoutes = require('./scheduleRoutes.js');
 const validate = require("../middlewares/validations/index.js");
 
 const router = express.Router();
-router.all(validate);
+router.use(validate);
 router.use('/user', userRoutes);
 router.use('/schedule', scheduleRoutes);
 

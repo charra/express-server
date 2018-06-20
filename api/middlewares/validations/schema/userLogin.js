@@ -14,8 +14,10 @@ module.exports = {
           "maxLength": 254
         }
       },
-      "required": ["password", "email"]
+      "required": ["password", "email"],
+      "additionalProperties": false
     }
   },
+  "additionalProperties": false,
   "required": ["data"]
 };

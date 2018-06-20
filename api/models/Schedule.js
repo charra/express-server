@@ -15,11 +15,14 @@ const Schedule = sequelize.define('Schedule', {
   peoples: {
     type: Sequelize.INTEGER
   },
+  peoplesNow: {
+    type: Sequelize.INTEGER
+  },
   category: {
     type: Sequelize.STRING,
-    "enum": [""]
+    enum: [""]
   },
-  nowMuch: {
+  howMuch: {
     type: Sequelize.FLOAT
   },
   description: {
@@ -28,7 +31,11 @@ const Schedule = sequelize.define('Schedule', {
   when: {
     type: Sequelize.BIGINT 
   },
-}, "", { tableName: tableName});
+  status: {
+    type: Sequelize.ENUM,
+    values: ["NEW", "PENDING", "CLOSED", "CANCELLED"]
+  }
+}, { tableName: tableName});
 
 Schedule.associate = function(models) {
   Schedule.belongsToMany(User, { as: 'contractors', through: 'worker_tasks', foreignKey: 'scheduleId' });

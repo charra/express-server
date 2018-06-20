@@ -33,7 +33,7 @@ const validator = function(req, res, next) {
       res.badRequest(`Field ${ajv.errors[0].dataPath.split(".data.")[1]} ${ajv.errors[0].message}`);
     }
     else {
-      res.forbidden(ajv.errors[0]);
+      res.forbidden(ajv.errors[0].message);
     }
   }
   else next();

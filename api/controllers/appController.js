@@ -8,7 +8,7 @@ class AppController {
   }
   create(req, res, next) {
     let obj = req.body.data;
-    
+
     this._model.create(obj)
       .then((savedObject) => {
         if(req.path === "/register") {
@@ -21,7 +21,7 @@ class AppController {
         else return res.ok({ data: savedObject });
       })
       .catch(err => {
-        return res.forbidden(err.message)
+        return res.forbidden(err)
       });
   }
 };

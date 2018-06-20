@@ -28,9 +28,15 @@ module.exports = {
             "type": "string",
             "format": "DateFromNow"
           },
+          "status": {
+            "type": "string",
+            "enum": ["NEW", "PENDING", "CLOSED", "CANCELLED"]
+          }
         },
-        "required": ["title", "peoples", "category", "nowMuch", "description", "when"]
+        "required": ["title", "peoples", "category", "nowMuch", "description", "when"],
+        "additionalProperties": false
       }
     },
-    "required": ["data"]
+    "required": ["data"],
+    "additionalProperties": false
   };
