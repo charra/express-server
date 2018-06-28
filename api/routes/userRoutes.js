@@ -1,7 +1,6 @@
 const express = require('express');
 const user = require('../controllers/userController');
-const userModel = require('../models/User');
-const userRoutes = new user(userModel);
+const userRoutes = new user();
 const checkUserUnique = require("../middlewares/checkUserUnique.js");
 
 const router = express.Router();

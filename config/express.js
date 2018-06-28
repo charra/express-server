@@ -11,8 +11,6 @@ const validate = require('../api/middlewares/validations');
 const routes = require('../api/routes');
 const customResponces = require("../api/response");
 
-//const error = require('../api/middlewares/error');
-
 const app = express();
 
 // parse body params and attache them to req.body

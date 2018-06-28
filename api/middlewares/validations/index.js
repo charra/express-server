@@ -5,9 +5,6 @@ const datesValidation = require("./datesValidation");
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
-//function validation 
-ajv.addFormat("DateFromNow", datesValidation);
-
 //user
 ajv.addSchema(schema.userLogin, "/user/login");
 ajv.addSchema(schema.userRegister, "/user/register");

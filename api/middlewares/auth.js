@@ -18,13 +18,13 @@ module.exports = (req, res, next) => {
   return authService.verifyToken(tokenToVerify, (err, thisToken) => {
     if (err) return res.unauthorized();
     else if (thisToken) {
-      return User.findOne({where: { id: thisToken.id }})
+      return User.findOne({where: { userId: thisToken.userId }})
         .then((userDb) => {
           if(userDb) {
-            req.user = userDb;
+            req.user = userDb;            
             return next();
           }
-          else res.unauthorized(); //not show if user not found
+          else return res.unauthorized(); //not show if user not found
         })
         .catch(err => {
           return res.serverError();

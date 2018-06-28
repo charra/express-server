@@ -25,15 +25,14 @@ module.exports = {
             "maxLength": 254
           },
           "when": {
-            "type": "string",
-            "format": "DateFromNow"
+            "type": "integer"
           },
           "status": {
             "type": "string",
             "enum": ["NEW", "PENDING", "CLOSED", "CANCELLED"]
           }
         },
-        "required": ["title", "peoples", "category", "nowMuch", "description", "when"],
+        "required": ["title", "peoples", "category", "howMuch", "description", "when"],
         "additionalProperties": false
       }
     },

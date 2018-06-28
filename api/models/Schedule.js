@@ -1,10 +1,11 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../../config/database');
+const User = require("./User");
 
 const tableName = 'schedule';
 
 const Schedule = sequelize.define('Schedule', {
-  scheduleId: {
+  sheduleId: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -35,10 +36,10 @@ const Schedule = sequelize.define('Schedule', {
     type: Sequelize.ENUM,
     values: ["NEW", "PENDING", "CLOSED", "CANCELLED"]
   }
-}, { tableName: tableName});
-
-Schedule.associate = function(models) {
-  Schedule.belongsToMany(User, { as: 'contractors', through: 'worker_tasks', foreignKey: 'scheduleId' });
-};
+}, { 
+  tableName: tableName,
+  syncOnAssociation: true
+ })
+Schedule.owner = Schedule.belongsTo(User, { as: 'owner', through: 'user_schedule', foreignKey: 'sheduleId', allowNull: true });
 
 module.exports = Schedule;

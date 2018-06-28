@@ -1,34 +1,50 @@
-const AppController = require('./appController.js');
 const config = require("../../config/env");
+const User = require("../models/User");
+const Schedule = require("../models/Schedule");
 
-class ScheduleController extends AppController {
-  constructor(model) {
-    super(model);
+User.schedules = User.belongsToMany(Schedule, { as: 'schedules', through: 'user_schedules', foreignKey: 'userId', allowNull: true });
+
+class ScheduleController {
+  create(req, res, next) {
+    let obj = req.body.data;
+    return Schedule.create(obj)
+      .then((savedObject) => {
+        const scheduleId = savedObject.sheduleId;
+        return savedObject.setOwner(req.user)
+          .then(schedule => {
+            return Schedule.findAll({
+              where: {
+                sheduleId: scheduleId
+              },
+              include: [
+                { model: User, as: 'owner' }
+              ]
+            })
+          })
+          .then(schedule => {
+            return res.ok({ data: schedule});
+          });
+      })
+      .catch(err => {
+        return res.forbidden(err)
+      });
   }
   getlist(req, res, next) {
-    const { email, password } = req.body.data;
-    return this._model.findOne({ email })
-      .then(user => {
-        if (!user) {
-          throw new Error("User not found");
+    const userId = req.user.userId;
+    return User.findAll({ 
+        /* where: {
+          userId: userId
+        }, */
+        include: [
+          { model: Schedule, as: 'schedules' }
+        ]
+      })
+      .then(schedule => {
+        if (!user.schedules || !user.schedules.length) {
+          throw new Error("Schedule not found");
         }
         else {
-          return bcryptCompareAsync(
-            password,
-            user.encryptedPassword
-          )
-            .then(result => {
-              if (!result) {
-                throw new Error("Invalid password or email");
-              }
-              else {
-                const token = authService.issueToken({
-                  exp: (Date.now() / 1000) + config.jwtExpirationInterval, // expire date in ceconds, now 2 hour
-                  id: user.id
-                });
-                return this._responce.ok({ Authorization: `Bearer ${token}` })
-              }
-            });
+          res.ok({ data: user.schedules});
         }
       })      
       .catch(err => {
@@ -37,7 +53,7 @@ class ScheduleController extends AppController {
   }
   join(req, res, next) {
     const sheduleId = req.param.scheduleId;
-    return this._model.findOne({ id: scheduleId, status: ["NEW", "PENDING"]})
+    return models.Schedule.findOne({ id: scheduleId, status: ["NEW", "PENDING"]})
       .then(schedule => {
         if (!schedule) {
           throw new Error("Schedule not found or been completed");

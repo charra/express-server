@@ -1,10 +1,16 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../../config/database');
+const Schedule = require("./Schedule");
 
 const tableName = 'user';
 
 const User = sequelize.define('User', {
+  userId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -15,14 +21,16 @@ const User = sequelize.define('User', {
   phone: {
     type: Sequelize.STRING,
   },
-}, { tableName: tableName });
+}, { 
+  tableName: tableName,
+  syncOnAssociation: true
+});
 
-User.associate = function (models) {
-  User.belongsTo(models.Schedule, { as: 'schedules', foreignKey: { name: 'owner', allowNull: false } });
-  User.belongsToMany(models.Schedule, { as: 'task', through: 'worker_tasks', foreignKey: 'contractor' })
-};
+//User.schedules = User.belongsTo(Schedule, { as: 'schedules', allowNull: true, });
 User.beforeCreate(user => {
-  user.password = bcrypt.hashSync(user.password, 10);
+  if(user.password) {
+    user.password = bcrypt.hashSync(user.password, 10);
+  }
 });
 
 User.prototype.toJSON = function () {
