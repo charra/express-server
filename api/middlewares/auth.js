@@ -1,5 +1,5 @@
 const authService = require('../services/authService');
-const User = require('../models/User');
+const database = require("../../config/database.js");
 
 module.exports = (req, res, next) => {
   let tokenToVerify;
@@ -18,10 +18,10 @@ module.exports = (req, res, next) => {
   return authService.verifyToken(tokenToVerify, (err, thisToken) => {
     if (err) return res.unauthorized();
     else if (thisToken) {
-      return User.findOne({where: { userId: thisToken.userId }})
+      return database.User.findOne({where: { userId: thisToken.userId }})
         .then((userDb) => {
           if(userDb) {
-            req.user = userDb;            
+            req.user = userDb;
             return next();
           }
           else return res.unauthorized(); //not show if user not found

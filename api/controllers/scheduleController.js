@@ -1,23 +1,21 @@
 const config = require("../../config/env");
-const User = require("../models/User");
-const Schedule = require("../models/Schedule");
-
-User.schedules = User.belongsToMany(Schedule, { as: 'schedules', through: 'user_schedules', foreignKey: 'userId', allowNull: true });
+const database = require("../../config/database.js");
 
 class ScheduleController {
   create(req, res, next) {
     let obj = req.body.data;
-    return Schedule.create(obj)
+    
+    return database.Schedule.create(obj)
       .then((savedObject) => {
-        const scheduleId = savedObject.sheduleId;
+        const scheduleId = savedObject.scheduleId;
         return savedObject.setOwner(req.user)
           .then(schedule => {
-            return Schedule.findAll({
+            return database.Schedule.findAll({
               where: {
-                sheduleId: scheduleId
+                scheduleId: scheduleId
               },
               include: [
-                { model: User, as: 'owner' }
+                { model: database.User, as: 'owner' }
               ]
             })
           })

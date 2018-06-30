@@ -1,13 +1,13 @@
 const app = require("./config/express.js");
-const sequelize = require("./config/database.js");
+const database = require("./config/database.js");
 const connection = require("./config/env");
 
-sequelize
-.sync({
-  force: false,
-  logging: true
-})
-//.authenticate()
+database.sequelize
+  .sync({
+    force: false,
+    logging: true
+  })
+  //.authenticate()
   .then(() => {    
     console.log('Database connection has been established successfully.');
     app.listen(connection.port, function(){

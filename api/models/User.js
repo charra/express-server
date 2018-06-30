@@ -1,42 +1,45 @@
-const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
-const sequelize = require('../../config/database');
-const Schedule = require("./Schedule");
 
 const tableName = 'user';
 
-const User = sequelize.define('User', {
-  userId: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+module.exports = (sequelize, Sequelize) => {
+  const User = sequelize.define('User', {
+    userId: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    email: {
+      type: Sequelize.STRING,
+      unique: true,
+    },
+    password: {
+      type: Sequelize.STRING,
+    },
+    phone: {
+      type: Sequelize.STRING,
+    },
   },
-  email: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
-  password: {
-    type: Sequelize.STRING,
-  },
-  phone: {
-    type: Sequelize.STRING,
-  },
-}, { 
-  tableName: tableName,
-  syncOnAssociation: true
-});
+  { 
+    tableName: tableName,
+    syncOnAssociation: true
+  });
 
-//User.schedules = User.belongsTo(Schedule, { as: 'schedules', allowNull: true, });
-User.beforeCreate(user => {
-  if(user.password) {
-    user.password = bcrypt.hashSync(user.password, 10);
-  }
-});
+  User.beforeCreate(user => {
+    if(user.password) {
+      user.password = bcrypt.hashSync(user.password, 10);
+    }
+  });
 
-User.prototype.toJSON = function () {
-  const values = Object.assign({}, this.get());
-  delete values.password;
-  return values;
+  User.prototype.toJSON = function () {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    return values;
+  };
+
+  User.associate = function(models) {
+    models.User.hasMany(models.Schedule, { as: 'schedules', foreignKey: 'userId', allowNull: true });
+  };
+
+  return User;
 };
-
-module.exports = User;
