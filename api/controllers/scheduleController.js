@@ -14,8 +14,9 @@ class ScheduleController {
               where: {
                 scheduleId: scheduleId
               },
+              attributes: { exclude: [ "createdAt", "updatedAt" ]},
               include: [
-                { model: database.User, as: 'owner' }
+                { model: database.User, as: 'owner', attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}}
               ]
             })
           })
