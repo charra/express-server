@@ -38,7 +38,8 @@ module.exports = (sequelize, Sequelize) => {
   };
 
   User.associate = function(models) {
-    models.User.hasMany(models.Schedule, { as: 'schedules', foreignKey: 'userId', allowNull: true });
+    models.User.hasMany(models.Schedule, { as: 'userSchedules', foreignKey: 'userId', allowNull: true });
+    models.User.belongsToMany(models.Schedule, { as: 'schedules', through: 'worker_schedules', foreignKey: 'userId', allowNull: true });
   };
 
   return User;

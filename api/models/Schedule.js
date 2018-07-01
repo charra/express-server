@@ -14,7 +14,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER
     },
     peoplesNow: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      defaultValue : 0
     },
     category: {
       type: Sequelize.STRING,
@@ -31,7 +32,8 @@ module.exports = (sequelize, Sequelize) => {
     },
     status: {
       type: Sequelize.ENUM,
-      values: ["NEW", "PENDING", "CLOSED", "CANCELLED"]
+      values: ["OPENED", "CLOSED", "CANCELLED"],
+      defaultValue: "OPENED"
     }
   },
   { 
@@ -41,6 +43,7 @@ module.exports = (sequelize, Sequelize) => {
 
   Schedule.associate = function(models) {
     models.Schedule.belongsTo(models.User, { as: 'owner', foreignKey: 'userId', allowNull: true });
+    models.Schedule.belongsToMany(models.User, { as: 'workers', through: 'worker_schedules', foreignKey: 'scheduleId', allowNull: true });
   };
 
   return Schedule;

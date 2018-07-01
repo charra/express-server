@@ -45,6 +45,6 @@ class UserController  {
         return res.forbidden(err.message)
       });
   }
-}
+};
 
 module.exports = UserController;

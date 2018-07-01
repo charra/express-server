@@ -1,5 +1,6 @@
 const config = require("../../config/env");
 const database = require("../../config/database.js");
+const Op = database.Sequelize.Op;
 
 class ScheduleController {
   create(req, res, next) {
@@ -16,7 +17,16 @@ class ScheduleController {
               },
               attributes: { exclude: [ "createdAt", "updatedAt" ]},
               include: [
-                { model: database.User, as: 'owner', attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}}
+                { 
+                  model: database.User,
+                  as: 'owner',
+                  attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}
+                },
+                { 
+                  model: database.User,
+                  as: 'workers',
+                  attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}
+                },
               ]
             })
           })
@@ -30,45 +40,48 @@ class ScheduleController {
   }
   getlist(req, res, next) {
     const userId = req.user.userId;
-    return User.findAll({ 
-        /* where: {
-          userId: userId
-        }, */
-        include: [
-          { model: Schedule, as: 'schedules' }
-        ]
-      })
-      .then(schedule => {
-        if (!user.schedules || !user.schedules.length) {
-          throw new Error("Schedule not found");
-        }
-        else {
-          res.ok({ data: user.schedules});
-        }
+    const query = { status: "OPENED" };
+    req.query.category ? query.category = req.query.category : "";
+    return database.Schedule.findAll({ 
+      where: query,
+      attributes: { exclude: [ "createdAt", "updatedAt" ]},
+      include: [
+        { 
+          model: database.User,
+          as: 'owner',
+          attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}
+        },
+        { 
+          model: database.User,
+          as: 'workers',
+          attributes: { exclude: [ "createdAt", "updatedAt", "password" ]}
+        },
+      ]
+    })
+      .then(schedulesArr => {
+        res.ok({ schedules: schedulesArr});
       })      
       .catch(err => {
-        return res.forbidden(err.message)
+        return res.serverError();
       });
   }
   join(req, res, next) {
-    const sheduleId = req.param.scheduleId;
-    return models.Schedule.findOne({ id: scheduleId, status: ["NEW", "PENDING"]})
-      .then(schedule => {
-        if (!schedule) {
-          throw new Error("Schedule not found or been completed");
-        }
-        else {
-          schedule.users.push(req.user.id)
-          return schedule.save()
-            .then(result => {
-              if (!result) {
-                throw new Error("Invalid password or email");
-              }
-            });
-        }
-      })
-      .catch(error => next(error.message));
+    const schedule = req.schedule;
+    if(schedule.userId === req.user.userId) {
+      res.forbidden("Can`t join your own schedule.");
+    }
+    else {
+      schedule.addWorker(req.user.userId);
+      schedule.peoplesNow = schedule.peoplesNow + 1;
+      if(schedule.peoples === schedule.peoplesNow) {
+        schedule.status = "CLOSED"; 
+      };           
+      return schedule.save()
+        .then(result => {
+          res.ok({schedule: result});
+        });
+    }    
   }
-}
+};
 
 module.exports = ScheduleController;

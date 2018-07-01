@@ -29,7 +29,7 @@ module.exports = {
           },
           "status": {
             "type": "string",
-            "enum": ["NEW", "PENDING", "CLOSED", "CANCELLED"]
+            "enum": ["OPENED", "CLOSED", "CANCELLED"]
           }
         },
         "required": ["title", "peoples", "category", "howMuch", "description", "when"],
