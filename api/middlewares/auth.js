@@ -22,7 +22,8 @@ module.exports = (req, res, next) => {
         .then((userDb) => {
           if(userDb) {
             req.user = userDb;
-            return next();
+            next();
+            return null;
           }
           else return res.unauthorized(); //not show if user not found
         })

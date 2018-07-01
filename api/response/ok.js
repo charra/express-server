@@ -1,9 +1,9 @@
-module.exports = function(message) {
+module.exports = function(data) {
   // Set status code
   this.status(200);
-  const data = {
-    status: "succes",
-    message: message
+  const responce = {
+    status: "success",
+    data: data
   };
-  return this.json({data: data});
+  return this.json(responce);
 };

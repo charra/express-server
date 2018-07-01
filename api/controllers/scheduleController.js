@@ -21,7 +21,7 @@ class ScheduleController {
             })
           })
           .then(schedule => {
-            return res.ok({ data: schedule});
+            return res.ok({schedule: schedule[0]});
           });
       })
       .catch(err => {

@@ -12,5 +12,6 @@ module.exports = {
   jwtSecret: "secret 123",
   jwtExpirationInterval: 120*60,
   logs: "combined",
-  logDirectory: `${__dirname.split("/config/env")[0]}/logs`
+  logDirectory: `${__dirname.split("/config/env")[0]}/logs`,
+  scheduleCategories: ["HOME_WORK", "OTHER"]
 }
