@@ -3,11 +3,7 @@ const database = require("./config/database.js");
 const connection = require("./config/env");
 
 database.sequelize
-  .sync({
-    force: true,
-    logging: true
-  })
-  //.authenticate()
+  .authenticate()
   .then(() => {    
     console.log('Database connection has been established successfully.');
     app.listen(connection.port, function(){

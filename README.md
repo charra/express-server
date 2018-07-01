@@ -16,6 +16,6 @@ npm install
 ````
 ## Node Env variable
 config file /config/env/<your environment variable>.js
-export NODE_ENV=development(or not export any = the same)
+export NODE_ENV=development
 
-## "npm run start" to start server 
+## "npm start" to start server 

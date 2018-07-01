@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
-const connection = require("./env");
+const config = require("./env");
 const modelsModules = require("../api/models");
+
+const connection = config.db[config.env];
 
 let models = {};
 
@@ -11,7 +13,7 @@ let models = {};
 
   const sequelize = new Sequelize(
     connection.database,
-    connection.username,
+    connection.user,
     connection.password, {
       host: connection.host,
       dialect: connection.dialect,

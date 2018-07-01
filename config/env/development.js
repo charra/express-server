@@ -1,11 +1,7 @@
-
+const dbConfig = require("./database.json");
 module.exports = {
   //db
-  username: "root",
-  password: "e27max60w",
-  database: "express_db",
-  host: "localhost",
-  dialect: "mysql",
+  db: dbConfig,
   //global
   env: "development",
   port: 3030,

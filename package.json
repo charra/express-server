@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "author": "Shvets Tatiana <tat86485689@gmail.com>",
   "scripts": {
-    "start": "node ./server.js"
+    "start": "npm run migrate && node ./server.js",
+    "migrate": "node node_modules/db-migrate/bin/db-migrate up"
   },
   "dependencies": {
     "ajv": "^5.5.1",
@@ -11,6 +12,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "db-migrate": "^0.11.1",
+    "db-migrate-mysql": "^1.1.10",
     "express": "^4.16.3",
     "express-routes-mapper": "^1.0.2",
     "include-all": "^1.0.0",

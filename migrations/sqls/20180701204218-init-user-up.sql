@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS `user` (`userId` INTEGER auto_increment , `email` VARCHAR(255) UNIQUE, `password` VARCHAR(255), `phone` VARCHAR(255), `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`userId`)) ENGINE=InnoDB;

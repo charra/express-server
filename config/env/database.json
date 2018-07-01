@@ -1,0 +1,14 @@
+{
+    "defaultEnv": {
+        "ENV": "NODE_ENV"
+    },
+    "development": {
+        "driver": "mysql",
+        "user": "root",
+        "password": "e27max60w",
+        "host": "localhost",
+        "database": "express_db",
+        "schema": "my_schema",
+        "dialect": "mysql"
+    }
+}
